@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>掘金登录界面及交互</title>
+  <style>
+  *{
+    margin: 0;
+    padding: 0;
+  }
+  html{
+    font-size: 12px;
+    background-color: #fff;
+    min-height: 100%;
+  }
+  body{
+    color: #333;
+    font-family:  Helvetica,STHeiTi,sans-serif;
+    -webkit-text-size-adjust: 100%!important;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+  }
+  a{
+    text-decoration: none;
+  }
+  .modal{
+    position: fixed;
+    z-index: 99;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,.3);
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .modal-container{
+    width: 26.5rem;
+    padding: 2rem;
+    border-radius: 2px;
+    background-color: #fff;
+    box-sizing: border-box;
+    position: relative;
+  }
+  .modal-header{
+    position: relative;
+    text-align: left;
+  }
+  .modal-header h3{
+    font-size: 1.5rem;
+    margin: 0 0 2rem;
+  }
+  .modal-header .close{
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 1.5rem;
+    opacity: .4;
+    cursor: pointer;
+  }
+  .modal-header .close:hover{
+    opacity: 1
+  }
+  .modal-content{
+    width: 100%;
+
+  }
+  .input-wrap{
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: .5rem;
+  }
+  .input-box{
+    position: relative;
+    margin-bottom: .5rem;
+  }
+  .input-box .input{
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border: 1px solid #e9e9e9;
+    outline: none;
+    box-sizing: border-box;
+  }
+  #loginBtn{
+    width: 100%;
+    height: 3.334rem;
+    background-color: #007fff;
+    border-radius: 2px;
+    outline: none;
+    border: none;
+    color: #fff;
+  }
+  .infobox{
+    width: 100%;
+    margin: 1rem 0 0;
+    color:#8b9196;
+    font-size: 1.167rem;
+  }
+  .infobox .register{
+    color:#007fff;
+    cursor: pointer;
+  }
+
+  .infobox .forgetpsw{
+    float: right;
+  }
+  .loginlink{
+    width: 100%;
+    margin-top: 2.3rem;
+    color:#8b9196;
+    font-size: 1rem;
+    line-height: 1.9rem;
+    box-sizing: border-box;
+  }
+  .link{
+    height: 1.9rem;
+    line-height: 1.9rem;
+    vertical-align: bottom;
+    margin-left: 1.2rem;
+    cursor: pointer;
+  }
+  .pana{
+    width: 10rem;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    -webkit-transform:translate(-50%,-83%);
+
+  }
+  .pana1{
+    transform: translate(-50%,-83%);
+  }
+  .pana2{
+    transform: translate(-50%,-75.8%);
+    display: none;
+  }
+  .pana3{
+    width: 8.6rem;
+    transform: translate(-50%,-75%);
+    display: none;
+  }
+  .warninfo{
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    z-index: 1000;
+  }
+  </style>
+</head>
+<body>
+  <div id="login-modal">
+    <div class="modal">
+      <div class="warninfo"></div>
+      <div class="modal-container">
+        <div class="panaimg">
+          <img src="https://gold-cdn.xitu.io/v3/static/img/normal.0447fe9.png" alt="" class="pana pana1">
+          <img src="https://gold-cdn.xitu.io/v3/static/img/greeting.1415c1c.png" alt="" class="pana pana2">
+          <img src="https://gold-cdn.xitu.io/v3/static/img/blindfold.58ce423.png" alt="" class="pana pana3">
+        </div>
+        <div class="modal-header">
+          <h3>登录</h3>
+          <span class="close">x</span>
+        </div>
+        <div class="modal-content">
+          <div class="input-wrap">
+            <div class="input-box">
+              <input class="input "type="text" name="emailortel" placeholder="邮箱/手机">
+            </div>
+            <div class="input-box">
+              <input type="password" class="input" minlength="6" maxlength="10" name="password" placeholder="密码">
+            </div>
+          </div>
+          <button id="loginBtn">登录</button>
+          <div class="infobox">
+            没有账号？
+            <span class="register">注册</span>
+            <a class="register forgetpsw" href="">忘记密码</a>
+          </div>
+          <div class="loginlink">
+             第三方账号登录：
+             <img src="https://gold-cdn.xitu.io/v3/static/img/weibo.fa758eb.svg" alt="" class="link">
+             <img src="https://gold-cdn.xitu.io/v3/static/img/wechat.e0ff124.svg" alt="" class="link">
+             <img src="https://gold-cdn.xitu.io/v3/static/img/github.547dd8a.svg" alt="" class="link">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const etInput=document.querySelector('input[name=emailortel]');
+    const pswInput=document.querySelector('input[name=password]');
+    const loginBtn=document.getElementById('loginBtn');
+    etInput.onfocus=function(){
+      document.querySelector('.pana1').style.display='none';
+      document.querySelector('.pana2').style.display='block';
+    }
+    etInput.onblur=function(){
+      document.querySelector('.pana1').style.display='block';
+      document.querySelector('.pana2').style.display='none';
+    }
+    pswInput.onfocus=function(){
+      document.querySelector('.pana1').style.display='none';
+      document.querySelector('.pana3').style.display='block';
+    }
+    pswInput.onblur=function(){
+      document.querySelector('.pana1').style.display='block';
+      document.querySelector('.pana3').style.display='none';
+    }
+    loginBtn.addEventListener('click',function(){
+      if(etInput.value.length==0 ){
+        document.querySelector('.pana2').style.display='block';
+        document.querySelector('.pana1').style.display='none';
+        // document.querySelector('.warninfo').innerHTML='请输入信息';
+        alert('邮箱/电话不能为空');
+        etInput.focus();
+        return false;
+      }
+      else if(pswInput.value.length==0){
+        document.querySelector('.pana3').style.display='block';
+        document.querySelector('.pana1').style.display='none';
+        // document.querySelector('.warninfo').innerHTML='请输入信息';
+        alert('请输入密码');
+        pswInput.focus();
+        return false;
+      }
+      document.querySelector('.modal-container').style.display='none';
+
+    })
+  </script>
+</body>
+</html>
